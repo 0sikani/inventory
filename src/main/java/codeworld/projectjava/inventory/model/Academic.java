@@ -2,11 +2,12 @@ package codeworld.projectjava.inventory.model;
 
 public class Academic {
     
-     private String programme;
-    private String cirtificateType;
-    private String otherDocs;
     private Long id;
     private String academicYear;
+    private String programme;
+    private String cirtificateType;
+    private String otherDocs;
+    
 
     public Academic() {}
 
