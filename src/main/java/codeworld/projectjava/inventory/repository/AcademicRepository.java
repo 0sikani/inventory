@@ -2,6 +2,7 @@ package codeworld.projectjava.inventory.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -32,6 +33,11 @@ public class AcademicRepository {
             jdbcTemp.update(sql, demc.getAcademicYear(), demc.getProgramme(), demc.getCirtificateType(), demc.getOtherDocs(), demc.getId());
         }
         return demc;
+    }
+
+    public List<Academic> findAll(){
+        String sql = "SELECT * FROM academic";
+        return jdbcTemp.query(sql, new AcademicRowMapper());
     }
 
     public Optional<Academic> findById(Long id){
