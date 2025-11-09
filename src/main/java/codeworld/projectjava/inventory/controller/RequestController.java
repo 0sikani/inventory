@@ -1,5 +1,6 @@
 package codeworld.projectjava.inventory.controller;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import codeworld.projectjava.inventory.model.Request;
@@ -24,10 +26,34 @@ public class RequestController {
         this.reqService = requestService;
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json")
     public ResponseEntity<Request> createRequest(@RequestBody Request req){
         return ResponseEntity.ok(reqService.createRequest(req));
     }
+
+    
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<Request> createRequestForm(
+            @RequestParam("studentId") Long studentId,
+            @RequestParam("academicId") Long academicId,
+            @RequestParam("requestDate") LocalDateTime requestDate,
+            @RequestParam("requestNature") String requestNature,
+            @RequestParam("sendingAddress") String sendingAddress,
+            @RequestParam("receivingAddress") String receivingAddress,
+            @RequestParam("requestStatus") String requestStatus) {
+        
+        Request request = new Request();
+        request.setStudentId(studentId);
+        request.setAcademicId(academicId);
+        request.setRequestDate(requestDate);
+        request.setRequestNature(requestNature);
+        request.setSendingAddress(sendingAddress);
+        request.setReceivingAddress(receivingAddress);
+        request.setRequestStatus(requestStatus);
+        
+        return ResponseEntity.ok(reqService.createRequest(request));
+    }
+
 
     @GetMapping
     public ResponseEntity<Stream<Request>> getAllRequest(){
@@ -52,3 +78,6 @@ public class RequestController {
         return ResponseEntity.noContent().build();
     }
 }
+
+
+    

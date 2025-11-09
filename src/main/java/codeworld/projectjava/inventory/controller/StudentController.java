@@ -1,5 +1,6 @@
 package codeworld.projectjava.inventory.controller;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import codeworld.projectjava.inventory.model.Student;
@@ -24,10 +26,30 @@ public class StudentController {
         this.stuService = studentService;
     }
 
-    @PostMapping
+    @PostMapping(consumes = "application/json")
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
         return ResponseEntity.ok(stuService.createStudent(student));
     }
+
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<Student> createStudentForm(
+        @RequestParam("academicId") Long academicId,
+        @RequestParam("studentName") String studentName,
+        @RequestParam("birthDate") LocalDate birDate,
+        @RequestParam("email") String email,
+        @RequestParam("phoneNumber") String phoneNumber,
+        @RequestParam("profilePicturePath") String profilePicturePath) {
+            Student student = new Student();
+            student.setAcademicId(academicId);          
+            student.setStudentName(studentName);
+            student.setBirthDate(birDate);  
+            student.setEmail(email);
+            student.setPhoneNumber(phoneNumber);
+            student.setProfilePicturePath(profilePicturePath);
+            
+            return ResponseEntity.ok(stuService.createStudent(student));
+        }
+
 
 
     @GetMapping
