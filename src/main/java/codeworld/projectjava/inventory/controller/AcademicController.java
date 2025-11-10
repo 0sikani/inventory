@@ -1,13 +1,14 @@
 package codeworld.projectjava.inventory.controller;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import codeworld.projectjava.inventory.model.Academic;
 import codeworld.projectjava.inventory.service.AcademicService;
-
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/academic")
@@ -18,24 +19,22 @@ public class AcademicController {
         this.acaService = academicService;
     }
     
-    // Handle JSON requests
     @PostMapping(consumes = "application/json")
     public ResponseEntity<Academic> createAcademicJson(@RequestBody Academic academic){
         return ResponseEntity.ok(acaService.createAcademic(academic));
     }
 
-    // Handle form data (URL encoded)
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<Academic> createAcademicForm(
             @RequestParam("academicYear") String academicYear,
             @RequestParam("programme") String programme,
-            @RequestParam("cirtificateType") String cirtificateType,
+            @RequestParam("certificateType") String certificateType,
             @RequestParam("otherDocs") String otherDocs) {
         
         Academic academic = new Academic();
         academic.setAcademicYear(academicYear);
         academic.setProgramme(programme);
-        academic.setCirtificateType(cirtificateType);
+        academic.setCertificateType(certificateType);
         academic.setOtherDocs(otherDocs);
         
         return ResponseEntity.ok(acaService.createAcademic(academic));
@@ -46,16 +45,17 @@ public class AcademicController {
         return ResponseEntity.ok(acaService.getAllAcademic());
     }
 
-    @GetMapping("/id/{id}")
-    public ResponseEntity<Optional<Academic>> getAcademicById(@PathVariable Long id){
-        Optional<Academic> academic = acaService.getAcademicById(id);
-        return academic.isPresent() ? ResponseEntity.ok(academic) : ResponseEntity.notFound().build();
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<List<Academic>> getAcademicsByStudentId(@PathVariable Long studentId) {
+        List<Academic> academics = acaService.getAcademicsByStudentId(studentId);
+        return ResponseEntity.ok(academics);
     }
 
-    @GetMapping("/email/{email}")
-    public ResponseEntity<Optional<Academic>> getAcademicByEmail(@PathVariable String email){
-        Optional<Academic> academic = acaService.getAcademicByEmail(email);
-        return academic.isPresent() ? ResponseEntity.ok(academic) : ResponseEntity.notFound().build();
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Academic> getAcademicById(@PathVariable Long id){
+        Optional<Academic> academic = acaService.getAcademicById(id);
+        return academic.map(ResponseEntity::ok)
+                      .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

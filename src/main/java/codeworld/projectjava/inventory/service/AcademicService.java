@@ -1,5 +1,6 @@
 package codeworld.projectjava.inventory.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -29,8 +30,8 @@ public class AcademicService {
         return acaRepo.findById(id);
     }
 
-    public Optional<Academic> getAcademicByEmail(String email){
-        return acaRepo.findByEmail(email);
+    public List<Academic> getAcademicsByStudentId(Long studentId) {
+        return acaRepo.findByStudentId(studentId);
     }
 
     public void deleteAcademic(Long id){

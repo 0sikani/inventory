@@ -16,51 +16,45 @@ import codeworld.projectjava.inventory.model.Academic;
 public class AcademicRepository {
     private final JdbcTemplate jdbcTemp;
 
-    public AcademicRepository(JdbcTemplate jdbcTemplate){
+    public AcademicRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemp = jdbcTemplate;
     }
 
-    public Academic save(Academic demc){
-        if(demc.getId() == null){
+    public Academic save(Academic academic) {
+        if (academic.getId() == null) {
             String sql = "INSERT INTO academic (academic_year, programme, certificate_type, other_docs) VALUES (?, ?, ?, ?)";
-            jdbcTemp.update(sql, demc.getAcademicYear(), demc.getProgramme(), demc.getCirtificateType(), demc.getOtherDocs());
+            jdbcTemp.update(sql, academic.getAcademicYear(), academic.getProgramme(), academic.getCertificateType(), academic.getOtherDocs());
 
             Long id = jdbcTemp.queryForObject("SELECT LAST_INSERT_ID()", Long.class);
-            demc.setId(id);
-        }
-        else{
+            academic.setId(id);
+        } else {
             String sql = "UPDATE academic SET academic_year = ?, programme = ?, certificate_type = ?, other_docs = ? WHERE id = ?";
-            jdbcTemp.update(sql, demc.getAcademicYear(), demc.getProgramme(), demc.getCirtificateType(), demc.getOtherDocs(), demc.getId());
+            jdbcTemp.update(sql, academic.getAcademicYear(), academic.getProgramme(), academic.getCertificateType(), academic.getOtherDocs(), academic.getId());
         }
-        return demc;
+        return academic;
     }
 
-    public List<Academic> findAll(){
+    public List<Academic> findAll() {
         String sql = "SELECT * FROM academic";
         return jdbcTemp.query(sql, new AcademicRowMapper());
     }
 
-    public Optional<Academic> findById(Long id){
-        String sql = "SELECt * from academic WHERE id = ?";
-        try{
-            Academic acdmc = jdbcTemp.queryForObject(sql, new AcademicRowMapper(), id);
-            return Optional.ofNullable(acdmc);
-        }catch(EmptyResultDataAccessException e) {
-            return Optional.empty();
-        }
-    }
-
-    public Optional<Academic> findByEmail(String email){
-        String sql = "SELECT * FROM academic WHERE email = ?";
+    public Optional<Academic> findById(Long id) {
+        String sql = "SELECT * FROM academic WHERE id = ?";
         try {
-            Academic acdmc = jdbcTemp.queryForObject(sql, new AcademicRowMapper(), email);
-            return Optional.ofNullable(acdmc);
+            Academic academic = jdbcTemp.queryForObject(sql, new AcademicRowMapper(), id);
+            return Optional.ofNullable(academic);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
 
-    public void delete(Long id){
+    public List<Academic> findByStudentId(Long studentId) {
+        String sql = "SELECT a.* FROM academic a INNER JOIN student_academic sa ON a.id = sa.academic_id WHERE sa.student_id = ?";
+        return jdbcTemp.query(sql, new AcademicRowMapper(), studentId);
+    }
+
+    public void delete(Long id) {
         String sql = "DELETE FROM academic WHERE id = ?";
         jdbcTemp.update(sql, id);
     }
@@ -68,13 +62,13 @@ public class AcademicRepository {
     private static class AcademicRowMapper implements RowMapper<Academic> {
         @Override
         public Academic mapRow(ResultSet rset, int rowNum) throws SQLException {
-            Academic aca = new Academic();
-            aca.setId(rset.getLong("id"));
-            aca.setAcademicYear(rset.getString("academic_year"));
-            aca.setCirtificateType(rset.getString("certificate_type"));
-            aca.setProgramme(rset.getString("programme"));
-            aca.setOtherDocs(rset.getString("other_docs"));
-            return aca;
+            Academic academic = new Academic();
+            academic.setId(rset.getLong("id"));
+            academic.setAcademicYear(rset.getString("academic_year"));
+            academic.setCertificateType(rset.getString("certificate_type"));
+            academic.setProgramme(rset.getString("programme"));
+            academic.setOtherDocs(rset.getString("other_docs"));
+            return academic;
         }
     }
 }

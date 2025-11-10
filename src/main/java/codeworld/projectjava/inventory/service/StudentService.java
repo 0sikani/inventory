@@ -1,5 +1,6 @@
 package codeworld.projectjava.inventory.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -31,6 +32,15 @@ public class StudentService {
 
     public Stream<Student> getAllStudents(){
         return studentRepo.findAll().stream();
+    }
+
+    // New methods with relationships
+    public List<Student> getAllStudentsWithRelations() {
+        return studentRepo.findAllWithRelations();
+    }
+
+    public Optional<Student> getStudentWithRelations(Long id) {
+        return studentRepo.findByIdWithRelations(id);
     }
 
     public void deleteStudent(Long id){
