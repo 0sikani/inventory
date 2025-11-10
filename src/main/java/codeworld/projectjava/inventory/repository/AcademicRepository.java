@@ -70,10 +70,10 @@ public class AcademicRepository {
         public Academic mapRow(ResultSet rset, int rowNum) throws SQLException {
             Academic aca = new Academic();
             aca.setId(rset.getLong("id"));
-            aca.setAcademicYear(rset.getString("academicYear"));
-            aca.setCirtificateType(rset.getString("cirtificateType"));
+            aca.setAcademicYear(rset.getString("academic_year"));
+            aca.setCirtificateType(rset.getString("certificate_type"));
             aca.setProgramme(rset.getString("programme"));
-            aca.setOtherDocs(rset.getString("otherDocs"));
+            aca.setOtherDocs(rset.getString("other_docs"));
             return aca;
         }
     }

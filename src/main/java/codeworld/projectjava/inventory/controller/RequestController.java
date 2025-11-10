@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +37,7 @@ public class RequestController {
     public ResponseEntity<Request> createRequestForm(
             @RequestParam("studentId") Long studentId,
             @RequestParam("academicId") Long academicId,
-            @RequestParam("requestDate") LocalDateTime requestDate,
+            @RequestParam("requestDate") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime requestDate,
             @RequestParam("requestNature") String requestNature,
             @RequestParam("sendingAddress") String sendingAddress,
             @RequestParam("receivingAddress") String receivingAddress,

@@ -25,8 +25,8 @@ public class StudentRepository {
 
     public Student save(Student student){
         if(student.getId() == null){
-            String sql = "INSERT INTO student (academicId, studentName, birthDate, email, phoneNumber, profilePicturePath) VALUES (?, ?, ?, ?, ?, ?)";
-            jdbcTemp.update(sql, student.getAcademicId(), student.getStudentName(), student.getBirthDate(), student.getEmail(), student.getPhoneNumber(), student.getProfilePicturePath());
+            String sql = "INSERT INTO student (academic_id, stu_name, birth_date, email_address, phone_number) VALUES (?, ?, ?, ?, ?)";
+            jdbcTemp.update(sql, student.getAcademicId(), student.getStudentName(), student.getBirthDate(), student.getEmail(), student.getPhoneNumber());
 
             Long id = jdbcTemp.queryForObject("SELECT LAST_INSERT_ID()", Long.class);
             student.setId(id);
@@ -70,12 +70,12 @@ public class StudentRepository {
         public Student mapRow(ResultSet rs, int rowNum) throws SQLException {
             Student student = new Student();
             student.setId(rs.getLong("id"));
-            student.setAcademicId(rs.getLong("academicId"));
-            student.setStudentName(rs.getString("studentName"));
-            student.setBirthDate(rs.getObject("birthDate", LocalDate.class));
-            student.setEmail(rs.getString("email"));
-            student.setPhoneNumber(rs.getString("phoneNumber"));
-            student.setProfilePicturePath(rs.getString("profilePicturePath"));
+            student.setAcademicId(rs.getLong("academic_id"));
+            student.setStudentName(rs.getString("stu_name"));
+            student.setBirthDate(rs.getObject("birth_date", LocalDate.class));
+            student.setEmail(rs.getString("email_address"));
+            student.setPhoneNumber(rs.getString("phone_number"));
+            // student.setProfilePicturePath(rs.getString("profilePicturePath"));
             return student;
         }
     }

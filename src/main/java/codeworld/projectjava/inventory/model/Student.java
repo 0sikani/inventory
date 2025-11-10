@@ -40,7 +40,7 @@ public class Student {
    public LocalDate getBirthDate() { return birthDate; }
    public String getEmail() { return email; }
    public String getPhoneNumber() { return phoneNumber; }
-   public String getProfilePicturePath() { return profilePicturePath; }
+   // public String getProfilePicturePath() { return profilePicturePath; }
    public List<Academic> getAcademics(){ return academics; }
    public List<Request> getRequests() { return requests; }
 
@@ -50,7 +50,7 @@ public class Student {
    public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
    public void setEmail(String email) { this.email = email; }
    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-   public void setProfilePicturePath(String profilePicturePath) { this.profilePicturePath = profilePicturePath; }
+   // public void setProfilePicturePath(String profilePicturePath) { this.profilePicturePath = profilePicturePath; }
    public void setAcademics(List<Academic> academics) { this.academics = academics; }
    public void setRequests(List<Request> requests) { this.requests = requests; }
 }

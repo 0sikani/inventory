@@ -37,15 +37,14 @@ public class StudentController {
         @RequestParam("studentName") String studentName,
         @RequestParam("birthDate") LocalDate birDate,
         @RequestParam("email") String email,
-        @RequestParam("phoneNumber") String phoneNumber,
-        @RequestParam("profilePicturePath") String profilePicturePath) {
+        @RequestParam("phoneNumber") String phoneNumber) {
             Student student = new Student();
             student.setAcademicId(academicId);          
             student.setStudentName(studentName);
             student.setBirthDate(birDate);  
             student.setEmail(email);
             student.setPhoneNumber(phoneNumber);
-            student.setProfilePicturePath(profilePicturePath);
+            // student.setProfilePicturePath(profilePicturePath);
             
             return ResponseEntity.ok(stuService.createStudent(student));
         }
